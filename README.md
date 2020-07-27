@@ -1,6 +1,6 @@
-# Microsoft Hackathon 2020 game
+# Radiator Alternator
 
-A demo game for PlayFab
+A demo multiplayer game for PlayFab from the 2020 Microsoft Hackathon
 
 # Instructions
 
