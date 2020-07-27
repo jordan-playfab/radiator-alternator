@@ -1,0 +1,48 @@
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    upload:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v2
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v1
+              with:
+                  node-version: "12.x"
+
+            - name: NPM install
+              run: npm install
+
+            - name: NPM build
+              run: npm run build
+
+            - name: Login to Azure
+              uses: Azure/login@v1
+              with:
+                  creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+            - name: Delete blob files
+              uses: Azure/cli@v1
+              with:
+                  azcliversion: latest
+                  inlineScript: |
+                      az storage blob delete-batch -s \$web --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}
+
+            - name: Upload to blob stoage
+              uses: Azure/cli@v1
+              with:
+                  azcliversion: latest
+                  inlineScript: |
+                      az storage blob upload-batch -s $GITHUB_WORKSPACE/build -d \$web --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}
+
+            - name: Purge CDN
+              uses: Azure/cli@v1
+              with:
+                  azcliversion: latest
+                  inlinescript: |
+                      az cdn endpoint purge -g ${{ secrets.AZURE_RESOURCE_GROUP_NAME }} -n ${{ secrets.AZURE_ENDPOINT_NAME }} --profile-name ${{ secrets.AZURE_CDN_NAME }} --content-paths '/*'

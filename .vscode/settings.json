@@ -1,0 +1,11 @@
+{
+	"files.exclude": {
+		".tscache": true,
+		"node_modules": true
+	},
+	"git.autorefresh": true,
+	"editor.formatOnSave": true,
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": true
+	}
+}
