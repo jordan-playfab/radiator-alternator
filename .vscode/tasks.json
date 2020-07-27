@@ -4,9 +4,10 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
+			"type": "shell",
 			"label": "Start",
 			"command": "npm",
-			"args": ["run", "start"],
+			"args": ["start"],
 			"isBackground": true,
 			"group": {
 				"kind": "build",
@@ -20,20 +21,6 @@
 				"showReuseMessage": true,
 				"clear": true
 			}
-		},
-		{
-			"label": "Grunt",
-			"command": "grunt",
-			"isBackground": true,
-			"presentation": {
-				"echo": true,
-				"reveal": "silent",
-				"focus": false,
-				"panel": "dedicated",
-				"showReuseMessage": true,
-				"clear": true
-			},
-			"problemMatcher": []
 		}
 	]
 }
