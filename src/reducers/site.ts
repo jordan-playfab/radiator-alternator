@@ -1,22 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { IAppAction } from "../store";
+import { is } from "../helpers/is";
 
 export interface ISiteState {
-	message: string;
+	titleId: string;
+	hasTitleId: boolean;
 }
 
 export const initialState: ISiteState = {
-	message: "",
+	titleId: "",
+	hasTitleId: false,
 };
 
 export const siteSlice = createSlice({
 	initialState,
 	name: "site",
 	reducers: {
-		setMessage: (state, action: IAppAction<string>) => {
+		setTitleId: (state, action: IAppAction<string>): ISiteState => {
 			return {
 				...state,
-				message: action.payload,
+				titleId: action.payload,
+				hasTitleId: !is.null(action.payload),
 			};
 		},
 	},
