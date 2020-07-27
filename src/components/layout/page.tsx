@@ -25,7 +25,7 @@ type Props = IProps & IState & IDispatch & RouteComponentProps<any>;
 const PageBase: React.FunctionComponent<Props> = React.memo(props => {
 	const { title, children, titleId, setTitleId, match } = props;
 
-	const uriTitleId = match.params.titleId;
+	const uriTitleId = match.params.titleid;
 
 	useEffect(() => {
 		if (titleId !== uriTitleId) {
@@ -37,7 +37,7 @@ const PageBase: React.FunctionComponent<Props> = React.memo(props => {
 		<>
 			{!is.null(title) && (
 				<Helmet>
-					<title>{title}</title>
+					<title>Radiator Alternator - {title}</title>
 				</Helmet>
 			)}
 			<div>
