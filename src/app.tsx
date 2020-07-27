@@ -6,7 +6,7 @@ import { GlobalStyle, defaultTheme, ThemeProvider } from "./styles";
 import { IAppState } from "./store";
 
 interface IState {
-	message: string;
+	titleId: string;
 }
 
 type Props = IState;
@@ -21,5 +21,5 @@ const AppBase: React.FunctionComponent<Props> = React.memo(props => {
 });
 
 export const App = connect<IState>((state: IAppState) => ({
-	message: state.site.message,
+	titleId: state.site.titleId,
 }))(AppBase);
