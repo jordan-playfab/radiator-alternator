@@ -19,3 +19,5 @@ A demo multiplayer game for PlayFab from the 2020 Microsoft Hackathon
 We're using the `main` branch for deployment. Please develop in a separate branch and send pull requests.
 
 Use [Fluent UI](https://developer.microsoft.com/en-us/fluentui#/controls/web) for controls like buttons and popups.
+
+Tip: use Ctrl-. (period) to activate the ESLint suggestions like removing unused code.
