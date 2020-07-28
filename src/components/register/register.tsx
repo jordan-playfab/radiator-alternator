@@ -22,19 +22,16 @@ const RegisterPageBase: React.FunctionComponent<Props> = React.memo(props => {
 	const { errorMessage, registerPlayer } = useRegister(titleId);
 
 	const [email, setEmail] = useState("");
-	const [userName, setUserName] = useState("");
+	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 
 	const onRegisterPlayer = useCallback(() => {
-		registerPlayer(userName, email, password)
-			.then(data => {
-				console.log(data);
+		registerPlayer(username, email, password)
+			.then(() => {
 				history.push(routes.Group(titleId));
 			})
-			.catch(() => {
-				console.log("Crud, now what?");
-			});
-	}, [email, history, password, registerPlayer, titleId, userName]);
+			.catch(() => {});
+	}, [email, history, password, registerPlayer, titleId, username]);
 
 	if (is.null(titleId)) {
 		return <GetTitleId />;
@@ -47,12 +44,10 @@ const RegisterPageBase: React.FunctionComponent<Props> = React.memo(props => {
 
 			<MyForm onSubmit={onRegisterPlayer}>
 				<h3>Create Player</h3>
-				<MyTextField label="Username" onChange={setUserName} value={userName} />
+				<MyTextField label="Username" onChange={setUsername} value={username} />
 				<MyTextField label="Email" onChange={setEmail} />
 				<MyTextField label="Password" type="password" onChange={setPassword} />
-				<PrimaryButton type="Submit" onClick={onRegisterPlayer}>
-					Create Player
-				</PrimaryButton>
+				<PrimaryButton type="submit">Create Player</PrimaryButton>
 			</MyForm>
 		</Page>
 	);
