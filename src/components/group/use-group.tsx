@@ -6,6 +6,7 @@ interface IUseLoginResult {
 	errorMessage: string;
 
 	createGroup: (name: string) => Promise<PlayFabGroupsModels.CreateGroupResponse>;
+	listMembership: () => Promise<PlayFabGroupsModels.ListMembershipResponse>;
 }
 
 export const useGroup = (): IUseLoginResult => {
@@ -34,8 +35,25 @@ export const useGroup = (): IUseLoginResult => {
 		});
 	}, []);
 
+	const listMembership = useCallback(() => {
+		clearErrorMessage();
+
+		return new Promise<PlayFabGroupsModels.ListMembershipResponse>((resolve, reject) => {
+			PlayFabGroups.ListMembership({}, (error, result) => {
+				if (!is.null(error)) {
+					reject(error.errorMessage);
+					setErrorMessage(error.errorMessage);
+					return;
+				}
+
+				resolve(result.data);
+			});
+		});
+	}, []);
+
 	return {
 		errorMessage,
 		createGroup,
+		listMembership,
 	};
 };

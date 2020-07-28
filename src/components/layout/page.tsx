@@ -6,6 +6,8 @@ import { IAppState } from "../../store";
 import { Dispatch } from "redux";
 import { siteSlice } from "../../reducers/site";
 import { RouteComponentProps, withRouter } from "react-router";
+import { Link } from "react-router-dom";
+import { routes } from "../../router";
 
 interface IProps {
 	title?: string;
@@ -42,6 +44,11 @@ const PageBase: React.FunctionComponent<Props> = React.memo(props => {
 			)}
 			<div>
 				<h1>{title}</h1>
+				{!is.null(titleId) && (
+					<p>
+						<Link to={routes.MainMenu(titleId)}>Main menu</Link>
+					</p>
+				)}
 				{children}
 			</div>
 		</>

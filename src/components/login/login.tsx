@@ -9,15 +9,21 @@ import { routes } from "../../router";
 import { MyTextField } from "../input/text-field";
 import { is } from "../../helpers/is";
 import { PrimaryButton } from "@fluentui/react";
+import { Dispatch } from "redux";
+import { siteSlice } from "../../reducers/site";
 
 interface IState {
 	titleId: string;
 }
 
-type Props = IState & RouteComponentProps;
+interface IDispatch {
+	setHasPlayer: () => void;
+}
+
+type Props = IState & IDispatch & RouteComponentProps;
 
 const LoginPageBase: React.FunctionComponent<Props> = React.memo(props => {
-	const { titleId, history } = props;
+	const { titleId, history, setHasPlayer } = props;
 	const { errorMessage, loginWithEmail, loginWithUsername } = useLogin(titleId);
 
 	const [email, setEmail] = useState("");
@@ -28,17 +34,19 @@ const LoginPageBase: React.FunctionComponent<Props> = React.memo(props => {
 		if (!is.null(email)) {
 			loginWithEmail(email, password)
 				.then(() => {
+					setHasPlayer();
 					history.push(routes.Group(titleId));
 				})
 				.catch(() => {});
 		} else {
 			loginWithUsername(username, password)
 				.then(() => {
+					setHasPlayer();
 					history.push(routes.Group(titleId));
 				})
 				.catch(() => {});
 		}
-	}, [email, history, loginWithEmail, loginWithUsername, password, titleId, username]);
+	}, [email, history, loginWithEmail, loginWithUsername, password, setHasPlayer, titleId, username]);
 
 	return (
 		<Page title="Login">
@@ -62,6 +70,11 @@ const LoginPageBase: React.FunctionComponent<Props> = React.memo(props => {
 	);
 });
 
-export const LoginPage = connect<IState>((state: IAppState) => ({
-	titleId: state.site.titleId,
-}))(withRouter(LoginPageBase));
+export const LoginPage = connect<IState, IDispatch>(
+	(state: IAppState) => ({
+		titleId: state.site.titleId,
+	}),
+	(dispatch: Dispatch) => ({
+		setHasPlayer: () => dispatch(siteSlice.actions.setHasPlayer()),
+	})
+)(withRouter(LoginPageBase));

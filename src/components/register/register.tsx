@@ -10,15 +10,21 @@ import { MyTextField } from "../input/text-field";
 import { PrimaryButton } from "@fluentui/react";
 import { MyForm } from "../input/form";
 import { routes } from "../../router";
+import { siteSlice } from "../../reducers/site";
+import { Dispatch } from "redux";
 
 interface IState {
 	titleId: string;
 }
 
-type Props = IState & RouteComponentProps;
+interface IDispatch {
+	setHasPlayer: () => void;
+}
+
+type Props = IState & IDispatch & RouteComponentProps;
 
 const RegisterPageBase: React.FunctionComponent<Props> = React.memo(props => {
-	const { titleId, history } = props;
+	const { titleId, history, setHasPlayer } = props;
 	const { errorMessage, registerPlayer } = useRegister(titleId);
 
 	const [email, setEmail] = useState("");
@@ -28,10 +34,11 @@ const RegisterPageBase: React.FunctionComponent<Props> = React.memo(props => {
 	const onRegisterPlayer = useCallback(() => {
 		registerPlayer(username, email, password)
 			.then(() => {
+				setHasPlayer();
 				history.push(routes.Group(titleId));
 			})
 			.catch(() => {});
-	}, [email, history, password, registerPlayer, titleId, username]);
+	}, [email, history, password, registerPlayer, setHasPlayer, titleId, username]);
 
 	if (is.null(titleId)) {
 		return <GetTitleId />;
@@ -53,6 +60,11 @@ const RegisterPageBase: React.FunctionComponent<Props> = React.memo(props => {
 	);
 });
 
-export const RegisterPage = connect<IState>((state: IAppState) => ({
-	titleId: state.site.titleId,
-}))(withRouter(RegisterPageBase));
+export const RegisterPage = connect<IState, IDispatch>(
+	(state: IAppState) => ({
+		titleId: state.site.titleId,
+	}),
+	(dispatch: Dispatch) => ({
+		setHasPlayer: () => dispatch(siteSlice.actions.setHasPlayer()),
+	})
+)(withRouter(RegisterPageBase));
