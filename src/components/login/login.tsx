@@ -50,7 +50,6 @@ const LoginPageBase: React.FunctionComponent<Props> = React.memo(props => {
 
 	return (
 		<Page title="Login">
-			<h2>Title ID {titleId}</h2>
 			<p>{errorMessage}</p>
 			<MyForm onSubmit={onSubmit}>
 				<fieldset>

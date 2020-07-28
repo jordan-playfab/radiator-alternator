@@ -46,7 +46,6 @@ const RegisterPageBase: React.FunctionComponent<Props> = React.memo(props => {
 
 	return (
 		<Page title="Register">
-			<h2>Title ID {titleId}</h2>
 			<p>{errorMessage}</p>
 
 			<MyForm onSubmit={onRegisterPlayer}>

@@ -22,8 +22,6 @@ const MainMenuPageBase: React.FunctionComponent<Props> = React.memo(props => {
 
 	return (
 		<Page title="Main Menu">
-			<h2>Title ID {titleId}</h2>
-
 			<ul>
 				<li>
 					<Link to={routes.Upload(titleId)}>Upload</Link>
@@ -33,9 +31,6 @@ const MainMenuPageBase: React.FunctionComponent<Props> = React.memo(props => {
 				</li>
 				<li>
 					<Link to={routes.Login(titleId)}>Login</Link>
-				</li>
-				<li>
-					<Link to={routes.Group(titleId)}>Create group</Link> (assuming you're logged in?)
 				</li>
 			</ul>
 		</Page>

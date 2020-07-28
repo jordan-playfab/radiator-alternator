@@ -44,6 +44,7 @@ const PageBase: React.FunctionComponent<Props> = React.memo(props => {
 			)}
 			<div>
 				<h1>{title}</h1>
+				<h2>Title ID {titleId}</h2>
 				{!is.null(titleId) && (
 					<p>
 						<Link to={routes.MainMenu(titleId)}>Main menu</Link>
