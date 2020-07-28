@@ -7,11 +7,13 @@ import { formatRoute } from "./helpers/routes";
 import { MainMenuPage } from "./components/main-menu";
 import { UploadPage } from "./components/upload/upload";
 import { GroupPage } from "./components/group/group";
+import { RegisterPage } from "./components/register/register";
 
 export const routeNames = {
 	Index: "/",
 	MainMenu: "/:titleid/main-menu",
 	Upload: "/:titleid/upload",
+	Register: "/:titleid/register",
 	Group: "/:titleid/group",
 };
 
@@ -20,6 +22,7 @@ export const routes = {
 	MainMenu: (titleId: string) => formatRoute(routeNames.MainMenu, titleId),
 	Upload: (titleId: string) => formatRoute(routeNames.Upload, titleId),
 	Group: (titleId: string) => formatRoute(routeNames.Group, titleId),
+	Register: (titleId: string) => formatRoute(routeNames.Register, titleId),
 };
 
 export const Router: React.FunctionComponent = () => {
@@ -30,6 +33,7 @@ export const Router: React.FunctionComponent = () => {
 				<Route exact path={routeNames.MainMenu} component={MainMenuPage} />
 				<Route exact path={routeNames.Upload} component={UploadPage} />
 				<Route exact path={routeNames.Group} component={GroupPage} />
+				<Route exact path={routeNames.Register} component={RegisterPage} />
 				<Route component={NotFoundPage} />
 			</Switch>
 		</BrowserRouter>
