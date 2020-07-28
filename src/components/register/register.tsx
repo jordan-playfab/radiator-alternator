@@ -50,9 +50,7 @@ const RegisterPageBase: React.FunctionComponent<Props> = React.memo(props => {
 				<MyTextField label="Username" onChange={setUserName} value={userName} />
 				<MyTextField label="Email" onChange={setEmail} />
 				<MyTextField label="Password" type="password" onChange={setPassword} />
-				<PrimaryButton type="Submit" onClick={onRegisterPlayer}>
-					Create Player
-				</PrimaryButton>
+				<PrimaryButton onClick={onRegisterPlayer}>Create Player</PrimaryButton>
 			</MyForm>
 		</Page>
 	);
