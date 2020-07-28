@@ -66,9 +66,6 @@ const MainMenuPageBase: React.FunctionComponent<Props> = React.memo(props => {
 
 		// Attempt to log in, just for fun (it'll always throw an error)
 		PlayFab.settings.titleId = titleId;
-		//PlayFab.settings.userId = userId;
-		//PlayFab.settings.emailId = emailId;
-		//PlayFab.settings.password = password;
 
 		PlayFabClient.LoginWithCustomID(
 			{
