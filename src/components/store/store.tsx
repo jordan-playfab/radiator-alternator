@@ -48,7 +48,7 @@ const StorePageBase: React.FunctionComponent<Props> = React.memo(props => {
 					<p>Items:</p>
 					<ul>
 						{store.ReferencedItems.map(item => (
-							<li>
+							<li key={item.Id}>
 								{item.Id} : {item.Title["neutral"]}
 							</li>
 						))}
