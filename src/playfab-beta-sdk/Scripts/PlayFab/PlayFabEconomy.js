@@ -1,7 +1,7 @@
 /* eslint-disable no-throw-literal */
 /// <reference path="../typings/PlayFab/PlayFabEconomy.d.ts" />
 
-var PlayFab = require("./PlayFab.js");
+var PlayFab = require("./playfab.js");
 
 exports.settings = PlayFab.settings;
 

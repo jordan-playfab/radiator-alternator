@@ -1,4 +1,4 @@
-var PlayFab = require("./Scripts/PlayFab/PlayFab.js");
+var PlayFab = require("./Scripts/PlayFab/playfab.js");
 
 var PlayFabAdmin = require("./Scripts/PlayFab/PlayFabAdmin.js");
 var PlayFabClient = require("./Scripts/PlayFab/PlayFabClient.js");
@@ -18,27 +18,27 @@ var PlayFabMultiplayer = require("./Scripts/PlayFab/PlayFabMultiplayer.js");
 var PlayFabProfiles = require("./Scripts/PlayFab/PlayFabProfiles.js");
 
 module.exports = {
-    PlayFab : PlayFab,
-    PlayFabAdmin : PlayFabAdmin,
-    PlayFabClient : PlayFabClient,
-    PlayFabMatchmaker : PlayFabMatchmaker,
-    PlayFabServer : PlayFabServer,
-    PlayFabAuthentication : PlayFabAuthentication,
-    PlayFabCloudScript : PlayFabCloudScript,
-    PlayFabData : PlayFabData,
-    PlayFabEconomy : PlayFabEconomy,
-    PlayFabEvents : PlayFabEvents,
-    PlayFabExperimentation : PlayFabExperimentation,
-    PlayFabInsights : PlayFabInsights,
-    PlayFabGroups : PlayFabGroups,
-    PlayFabLeaderboards : PlayFabLeaderboards,
-    PlayFabLocalization : PlayFabLocalization,
-    PlayFabMultiplayer : PlayFabMultiplayer,
-    PlayFabProfiles : PlayFabProfiles,
-    get settings() {
-        return PlayFab.settings;
-    },
-    set settings(value) {
-        Object.assign(PlayFab.settings,value);
-    }
+  PlayFab: PlayFab,
+  PlayFabAdmin: PlayFabAdmin,
+  PlayFabClient: PlayFabClient,
+  PlayFabMatchmaker: PlayFabMatchmaker,
+  PlayFabServer: PlayFabServer,
+  PlayFabAuthentication: PlayFabAuthentication,
+  PlayFabCloudScript: PlayFabCloudScript,
+  PlayFabData: PlayFabData,
+  PlayFabEconomy: PlayFabEconomy,
+  PlayFabEvents: PlayFabEvents,
+  PlayFabExperimentation: PlayFabExperimentation,
+  PlayFabInsights: PlayFabInsights,
+  PlayFabGroups: PlayFabGroups,
+  PlayFabLeaderboards: PlayFabLeaderboards,
+  PlayFabLocalization: PlayFabLocalization,
+  PlayFabMultiplayer: PlayFabMultiplayer,
+  PlayFabProfiles: PlayFabProfiles,
+  get settings() {
+    return PlayFab.settings;
+  },
+  set settings(value) {
+    Object.assign(PlayFab.settings, value);
+  },
 };
