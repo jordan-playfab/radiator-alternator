@@ -32,6 +32,9 @@ const MainMenuPageBase: React.FunctionComponent<Props> = React.memo(props => {
 					<Link to={routes.Register(titleId)}>Register</Link>
 				</li>
 				<li>
+					<Link to={routes.Login(titleId)}>Login</Link>
+				</li>
+				<li>
 					<Link to={routes.Group(titleId)}>Create group</Link> (assuming you're logged in?)
 				</li>
 			</ul>

@@ -1,46 +1,74 @@
 import { PlayFab, PlayFabClient } from "playfab-sdk";
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { is } from "../../helpers/is";
 
 interface IUseLoginResult {
 	errorMessage: string;
-	hasLoggedIn: boolean;
+
+	loginWithEmail: (email: string, password: string) => Promise<PlayFabClientModels.LoginResult>;
+	loginWithUsername: (username: string, password: string) => Promise<PlayFabClientModels.LoginResult>;
 }
 
 export const useLogin = (titleId: string): IUseLoginResult => {
 	const [errorMessage, setErrorMessage] = useState("");
-	const [hasLoggedIn, setHasLoggedIn] = useState(false);
 
-	useEffect(() => {
-		if (is.null(titleId)) {
-			return;
-		}
+	const clearErrorMessage = () => setErrorMessage("");
 
-		// Obviously terrible temporary code
-		PlayFab.settings.titleId = titleId;
-		PlayFabClient.LoginWithCustomID(
-			{
-				CreateAccount: true,
-				CustomId: "jordan",
-			},
-			(result, error) => {
-				if (!is.null(error)) {
-					setErrorMessage(error.errorMessage);
-					return;
-				}
+	const loginWithEmail = useCallback(
+		(email: string, password: string) => {
+			clearErrorMessage();
 
-				if (result.code === 200) {
-					setErrorMessage("");
-					setHasLoggedIn(true);
-				} else {
-					setErrorMessage(result.errorMessage);
-				}
-			}
-		);
-	}, [titleId]);
+			return new Promise<PlayFabClientModels.LoginResult>((resolve, reject) => {
+				PlayFab.settings.titleId = titleId;
+				PlayFabClient.LoginWithEmailAddress(
+					{
+						Email: email,
+						Password: password,
+					},
+					(error, result) => {
+						if (!is.null(error)) {
+							reject(error.errorMessage);
+							setErrorMessage(error.errorMessage);
+							return;
+						}
+
+						resolve(result.data);
+					}
+				);
+			});
+		},
+		[titleId]
+	);
+
+	const loginWithUsername = useCallback(
+		(username: string, password: string) => {
+			clearErrorMessage();
+
+			return new Promise<PlayFabClientModels.LoginResult>((resolve, reject) => {
+				PlayFab.settings.titleId = titleId;
+				PlayFabClient.LoginWithPlayFab(
+					{
+						Username: username,
+						Password: password,
+					},
+					(error, result) => {
+						if (!is.null(error)) {
+							reject(error.errorMessage);
+							setErrorMessage(error.errorMessage);
+							return;
+						}
+
+						resolve(result.data);
+					}
+				);
+			});
+		},
+		[titleId]
+	);
 
 	return {
-		hasLoggedIn,
 		errorMessage,
+		loginWithEmail,
+		loginWithUsername,
 	};
 };
