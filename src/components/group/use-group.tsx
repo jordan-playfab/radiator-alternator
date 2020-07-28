@@ -2,14 +2,14 @@ import { PlayFabGroups } from "playfab-sdk";
 import { useState, useCallback } from "react";
 import { is } from "../../helpers/is";
 
-interface IUseLoginResult {
+interface IResult {
 	errorMessage: string;
 
 	createGroup: (name: string) => Promise<PlayFabGroupsModels.CreateGroupResponse>;
 	listMembership: () => Promise<PlayFabGroupsModels.ListMembershipResponse>;
 }
 
-export const useGroup = (): IUseLoginResult => {
+export const useGroup = (): IResult => {
 	const [errorMessage, setErrorMessage] = useState("");
 
 	const clearErrorMessage = () => setErrorMessage("");
