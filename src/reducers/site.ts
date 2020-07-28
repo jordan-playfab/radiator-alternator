@@ -5,11 +5,17 @@ import { is } from "../helpers/is";
 export interface ISiteState {
 	titleId: string;
 	hasTitleId: boolean;
+	userId: string;
+	emailId: string;
+	password: string;
 }
 
 export const initialState: ISiteState = {
 	titleId: "",
 	hasTitleId: false,
+	userId: "",
+	emailId: "",
+	password: "",
 };
 
 export const siteSlice = createSlice({
