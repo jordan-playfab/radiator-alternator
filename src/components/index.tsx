@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { Page } from "./layout/page";
-import { Button } from "@fluentui/react";
+import { PrimaryButton } from "@fluentui/react";
 import { is } from "../helpers/is";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -35,7 +35,7 @@ const IndexPageBase: React.FunctionComponent<Props> = React.memo(props => {
 			<form onSubmit={onSubmit}>
 				<MyTextField label="Title ID" onChange={setTitleID} value={titleId} autoFocus />
 
-				<Button onClick={onSubmit}>Set title ID</Button>
+				<PrimaryButton onClick={onSubmit}>Set title ID</PrimaryButton>
 			</form>
 		</Page>
 	);

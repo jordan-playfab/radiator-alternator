@@ -1,3 +1,4 @@
+/* eslint-disable no-throw-literal */
 /// <reference path="../typings/PlayFab/PlayFabAdmin.d.ts" />
 
 var PlayFab = require("./PlayFab.js");
