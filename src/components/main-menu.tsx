@@ -1,59 +1,41 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Page } from "./layout/page";
 import { connect } from "react-redux";
 import { IAppState } from "../store";
+import { Link } from "react-router-dom";
+import { routes } from "../router";
 import { is } from "../helpers/is";
-import { PlayFab, PlayFabClient } from "playfab-sdk";
+import { GetTitleId } from "./layout/get-title-id";
 
 interface IState {
 	titleId: string;
-	hasTitleId: boolean;
 }
 
 type Props = IState;
 
 const MainMenuPageBase: React.FunctionComponent<Props> = React.memo(props => {
-	const { titleId, hasTitleId } = props;
-	const [message, setMessage] = useState("");
+	const { titleId } = props;
 
-	useEffect(() => {
-		if (!hasTitleId) {
-			return;
-		}
-
-		// Attempt to log in, just for fun (it'll always throw an error)
-		PlayFab.settings.titleId = titleId;
-		PlayFabClient.LoginWithCustomID(
-			{
-				CreateAccount: false,
-				CustomId: new Date().getTime().toString(),
-			},
-			(result, error) => {
-				if (!is.null(error)) {
-					setMessage(error.errorMessage);
-					return;
-				}
-
-				if (result.code === 200) {
-					setMessage("Success, somehow");
-				} else {
-					setMessage(result.errorMessage);
-				}
-			}
-		);
-	}, [hasTitleId, titleId]);
+	if (is.null(titleId)) {
+		return <GetTitleId />;
+	}
 
 	return (
 		<Page title="Main Menu">
-			<h2>Title ID</h2>
+			<h2>Title ID {titleId}</h2>
 
-			<p>Your title ID is {titleId}</p>
-			<p>{message}</p>
+			<ul>
+				<li>
+					<Link to={routes.Upload(titleId)}>Upload</Link>
+				</li>
+				<li>
+					<Link to={routes.Group(titleId)}>Create group</Link> (assuming you're logged in?)
+				</li>
+			</ul>
 		</Page>
 	);
 });
 
 export const MainMenuPage = connect<IState>((state: IAppState) => ({
 	titleId: state.site.titleId,
-	hasTitleId: state.site.hasTitleId,
 }))(MainMenuPageBase);
