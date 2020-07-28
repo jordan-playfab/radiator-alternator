@@ -11,7 +11,7 @@ export const MyTextField: React.FunctionComponent<IProps> = React.memo(props => 
 
 	const onChangeLocal = useCallback(
 		(_: any, value: any) => {
-			onChange(value.trim());
+			onChange(value);
 		},
 		[onChange]
 	);
