@@ -11,7 +11,7 @@ interface IState {
 
 type Props = IState;
 
-const UploadPageBase: React.FunctionComponent<Props> = React.memo(props => {
+const StorePageBase: React.FunctionComponent<Props> = React.memo(props => {
 	const { titleId } = props;
 
 	if (is.null(titleId)) {
@@ -19,12 +19,12 @@ const UploadPageBase: React.FunctionComponent<Props> = React.memo(props => {
 	}
 
 	return (
-		<Page title="Upload">
-			<p>This will be the upload page. Eventually.</p>
+		<Page title="Store">
+			<p>List of things you can buy for yourself (assuming you're in a group)</p>
 		</Page>
 	);
 });
 
-export const UploadPage = connect<IState>((state: IAppState) => ({
+export const StorePage = connect<IState>((state: IAppState) => ({
 	titleId: state.site.titleId,
-}))(UploadPageBase);
+}))(StorePageBase);
