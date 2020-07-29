@@ -46,62 +46,11 @@ IF - GENERAL - ALWAYS
         DESTINATION: /80ABC123/mysite/index.html
 ```
 
-GitHub actions are great for continuous deployment. Here's `.github/workflows/actions.yml` I used to build and deploy this site to Azure. In the Azure Portal Shell you run this command to generate the AZURE_CREDENTIALS which you store in GitHub (along with the storage account name and others).
+GitHub actions are great for continuous deployment. See [.github/workflows/actions.yml](https://github.com/jordan-playfab/radiator-alternator/blob/main/.github/workflows/actions.yml) which I used to build and deploy this site to Azure. In the Azure Portal Shell you run this command to generate the AZURE_CREDENTIALS which you store in GitHub (along with the storage account name and others).
 
 ```bash
 # Generate Azure credentials
 az ad sp create-for-rbac --name "http://MySiteOnGitHub" --role contributor --scopes /subscriptions/123-my-subscription-id/resourceGroups/my-resource-group-name --sdk-auth
-```
-
-```yml
-on:
-    push:
-        branches:
-            - main
-
-jobs:
-    upload:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v2
-
-            - name: Setup Node.js
-              uses: actions/setup-node@v1
-              with:
-                  node-version: "12.x"
-
-            - name: NPM install
-              run: npm install
-
-            - name: NPM build
-              run: npm run build
-
-            - name: Login to Azure
-              uses: Azure/login@v1
-              with:
-                  creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-            - name: Delete blob files
-              uses: Azure/cli@v1
-              with:
-                  azcliversion: latest
-                  inlineScript: |
-                      az storage blob delete-batch -s \$web --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}
-
-            - name: Upload to blob stoage
-              uses: Azure/cli@v1
-              with:
-                  azcliversion: latest
-                  inlineScript: |
-                      az storage blob upload-batch -s $GITHUB_WORKSPACE/build -d \$web --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}
-
-            - name: Purge CDN
-              uses: Azure/cli@v1
-              with:
-                  azcliversion: latest
-                  inlinescript: |
-                      az cdn endpoint purge -g ${{ secrets.AZURE_RESOURCE_GROUP_NAME }} -n ${{ secrets.AZURE_ENDPOINT_NAME }} --profile-name ${{ secrets.AZURE_CDN_NAME }} --content-paths '/*'
 ```
 
 One thing I couldn't get working was to have the `az storage blob delete-batch` command delete files older than 1 hour. There's supposed to be an `--if-unmodified-since` flag but everything I tried threw up syntax errors. That's why it deletes all the files in the blob storage before uploading new ones. Bad practice, but on low traffic sites this is probably fine.
@@ -142,77 +91,8 @@ The ESLint and Prettier extensions are terrific and essential to a pleasant deve
 
 Writing components using Atomic design is extremely difficult to maintain even when you're writing and designing the entire thing yourself. I tried naming components with Atom, Molecule, Organism, etc. and putting them in /01-atom, /02-molecule folders as the [Atomic design methodology shows](https://atomicdesign.bradfrost.com/chapter-2/), but it quickly became unusable. The file names were unreadable and the judgement calls about molecules vs. organisms was too difficult.
 
-Writing pages as functional components with their own custom hooks is a great methodology. A simplified example would be this login page:
+Writing pages as functional components with their own custom hooks is a great methodology. The login page is a great example with [login.tsx](https://github.com/jordan-playfab/radiator-alternator/blob/main/src/components/login/login.tsx) and [use-login.ts](https://github.com/jordan-playfab/radiator-alternator/blob/main/src/components/login/use-login.ts).
 
-```typescript
-// login.tsx
-export const LoginPage: React.FunctionComponent = React.memo(() => {
-	const { errorMessage, loginWithEmail } = useLogin(titleId);
+## Redux
 
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-
-	const onSubmit = useCallback(() => {
-		loginWithEmail(email, password)
-			.then(() => {
-				history.push(routes.Group(titleId));
-			})
-			.catch(() => {});
-	}, [email, history, loginWithEmail, password, titleId]);
-
-	return (
-		<Page title="Login">
-			{!is.null(errorMessage) && <p>{errorMessage}</p>}
-			<form onSubmit={onSubmit}>
-				<TextField label="Email" onChange={setEmail} />
-				<TextField label="Password" type="password" onChange={setPassword} />
-
-				<PrimaryButton type="submit">Login</PrimaryButton>
-			</form>
-		</Page>
-	);
-});
-```
-
-```typescript
-// use-login.ts
-interface IResult {
-	errorMessage: string;
-	loginWithEmail: (email: string, password: string) => Promise<PlayFabClientModels.LoginResult>;
-}
-
-export const useLogin = (titleId: string): IResult => {
-	const [errorMessage, setErrorMessage] = useState("");
-
-	const loginWithEmail = useCallback(
-		(email: string, password: string) => {
-			setErrorMessage("");
-
-			return new Promise<PlayFabClientModels.LoginResult>((resolve, reject) => {
-				PlayFab.settings.titleId = titleId;
-				PlayFabClient.LoginWithEmailAddress(
-					{
-						Email: email,
-						Password: password,
-					},
-					(error, result) => {
-						if (!is.null(error)) {
-							reject(error.errorMessage);
-							setErrorMessage(error.errorMessage);
-							return;
-						}
-
-						resolve(result.data);
-					}
-				);
-			});
-		},
-		[titleId]
-	);
-
-	return {
-		errorMessage,
-		loginWithEmail,
-	};
-};
-```
+The [Redux Toolkit](https://redux-toolkit.js.org/) makes life with Redux so much easier. A reducer and initial state can look like this simple [site.ts](https://github.com/jordan-playfab/radiator-alternator/blob/main/src/reducers/site.ts) file. Then you build a [store](https://github.com/jordan-playfab/radiator-alternator/blob/main/src/store.tsx) by combining the reducers together and you're done.
